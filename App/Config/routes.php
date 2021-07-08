@@ -6,7 +6,7 @@ return [
         'action'=>'index',
     ],
 
-    'departments' => [
+    'deps' => [
         'controller'=>'department',
         'action'=>'get',
     ],

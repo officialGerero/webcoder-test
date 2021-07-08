@@ -22,7 +22,6 @@ class Router{
 
     public function match(){
         $url = str_replace('/webcoder-test/','',$_SERVER['REQUEST_URI']);
-        debug($url);
         foreach ($this->routes as $route => $params){
             if(preg_match($route,$url,$matches)){
                 $this->params = $params;
@@ -34,7 +33,20 @@ class Router{
 
     public function run(){
         if($this->match()){
-            echo 'All good';
+            $path = 'App\Controllers\\'.ucfirst($this->params['controller'].'Controller');
+            if(class_exists($path)){
+                $action = $this->params['action'];
+                if(method_exists($path,$action)){
+                    $controller = new $path($this->params);
+                    $controller->$action();
+                }else {
+                    echo 'Action doen`t exists';
+                }
+            }else {
+                echo 'Class'.$path.' wasn`t found';
+            }
+        }else {
+            echo 'Route wasn`t found';
         }
     }
 }
